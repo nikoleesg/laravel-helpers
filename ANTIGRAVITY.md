@@ -14,7 +14,7 @@ When working on this project as the AI Assistant (Antigravity), please adhere to
 - **Implement Robustly:** Write clean, typed, and well-structured PHP code. Ensure full compatibility with the minimum supported PHP version defined in `composer.json` (currently PHP 8.3+).
 - **Test Thoroughly:** EVERY new feature (macro, trait, enum, etc.) MUST be accompanied by comprehensive tests using Pest. Ensure edge cases (like division by zero) are covered.
 - **Document Changes:** ALWAYS update the `README.md` file to document new features immediately after implementing them and before committing. Structure the documentation clearly with examples.
-- **Commit Granularly:** Make clean, atomic commits with descriptive messages for each logical piece of work. Follow conventional commits (e.g., `feat:`, `fix:`, `docs:`).
+- **Commit Granularly:** Make clean, atomic commits with descriptive messages for each logical piece of work. Follow conventional commits (e.g., `feat:`, `fix:`, `docs:`). **CRITICAL: DO NOT commit changes without the user's explicit review and confirmation.**
 
 ### 2. Code Style
 
