@@ -51,9 +51,52 @@ php artisan vendor:publish --tag="laravel-helpers-views"
 
 ## Usage
 
+### Collection Math Macros
+
+This package provides convenient math operations that can be performed directly on Laravel Collections.
+
+#### `addValueByKey`
+
+Adds values by key between two collections/arrays. Keeps the left-hand collection's keys. Missing keys on the right are treated as 0.
+
 ```php
-$laravelHelpers = new Nikoleesg\LaravelHelpers();
-echo $laravelHelpers->echoPhrase('Hello, Nikoleesg!');
+$collection = collect(['a' => 1, 'b' => 2, 'c' => 3]);
+$result = $collection->addValueByKey(['a' => 10, 'b' => 20]);
+
+$result->toArray(); // ['a' => 11, 'b' => 22, 'c' => 3]
+```
+
+#### `subtractValueByKey`
+
+Subtracts values by key between two collections/arrays. Keeps the left-hand collection's keys. Missing keys on the right are treated as 0.
+
+```php
+$collection = collect(['a' => 10, 'b' => 20, 'c' => 30]);
+$result = $collection->subtractValueByKey(['a' => 5, 'c' => 10]);
+
+$result->toArray(); // ['a' => 5, 'b' => 20, 'c' => 20]
+```
+
+#### `multiplyValues`
+
+Multiplies each item in the collection by a scalar value.
+
+```php
+$collection = collect(['a' => 10, 'b' => 20, 'c' => 30]);
+$result = $collection->multiplyValues(2);
+
+$result->toArray(); // ['a' => 20, 'b' => 40, 'c' => 60]
+```
+
+#### `divideValues`
+
+Divides each item in the collection by a scalar value. Throws an `InvalidArgumentException` if the divisor is zero.
+
+```php
+$collection = collect(['a' => 10, 'b' => 20, 'c' => 30]);
+$result = $collection->divideValues(2);
+
+$result->toArray(); // ['a' => 5, 'b' => 10, 'c' => 15]
 ```
 
 ## Testing
