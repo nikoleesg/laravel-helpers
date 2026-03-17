@@ -9,7 +9,7 @@ class CollectionMathMacros
 {
     public function addValueByKey()
     {
-        return function (iterable $other): Collection {
+        return function (iterable $other): static {
             $other = collect($other);
 
             return $this->map(function ($value, $key) use ($other) {
@@ -20,7 +20,7 @@ class CollectionMathMacros
 
     public function subtractValueByKey()
     {
-        return function (iterable $other): Collection {
+        return function (iterable $other): static {
             $other = collect($other);
 
             return $this->map(function ($value, $key) use ($other) {
@@ -31,7 +31,7 @@ class CollectionMathMacros
 
     public function multiplyValues()
     {
-        return function (int|float $multiplier): Collection {
+        return function (int|float $multiplier): static {
             return $this->map(function ($value) use ($multiplier) {
                 return $value * $multiplier;
             });
@@ -40,7 +40,7 @@ class CollectionMathMacros
 
     public function divideValues()
     {
-        return function (int|float $divisor): Collection {
+        return function (int|float $divisor): static {
             if ($divisor == 0) {
                 throw new InvalidArgumentException('Division by zero.');
             }
