@@ -126,6 +126,47 @@ Transaction::ofLastWeek()->avg('amount');
 ```
 
 By default, the date scopes act selectively depending on your requirement (exclusive vs inclusive ranges). You can also fluently customize the time columns or ranges inline. See the [detailed blog post](https://www.laracraft.tech/blog/laravel-date-scopes-a-package-to-filter-eloquent-models-by-common-date-ranges-conveniently) for a deep dive into advanced usage like `startFrom` bounds or custom `created_at` fields.
+### Eloquent Model Traits
+
+This package provides traits to add standard, helpful behaviors to your Eloquent models.
+
+#### `HasUuid`
+
+Automatically generates a UUID string when a model is being created.
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Nikoleesg\LaravelHelpers\Traits\HasUuid;
+
+class Post extends Model
+{
+    use HasUuid;
+    
+    // Optional properties for custom behavior:
+    // protected string $uuidColumn = 'my_uuid';
+    // protected bool $useUuidAsPrimaryKey = true;
+    // protected bool $useUuidForRouteKey = true;
+}
+```
+
+#### `HasTablePrefix`
+
+Automatically prefixes the table name of the model when guessed by Laravel. Handily bypasses the explicit `protected $table` declaration.
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Nikoleesg\LaravelHelpers\Traits\HasTablePrefix;
+
+class Invoice extends Model
+{
+    use HasTablePrefix;
+    
+    // Prefix to prepend to the dynamically guessed table name (e.g., 'invoices')
+    protected string $tablePrefix = 'inv_'; 
+    
+    // Resolves table name to: 'inv_invoices'
+}
+```
 
 ## Testing
 
