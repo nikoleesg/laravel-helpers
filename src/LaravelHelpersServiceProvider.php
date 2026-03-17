@@ -27,6 +27,6 @@ class LaravelHelpersServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        Collection::mixin(new CollectionMathMacros());
+        Collection::mixin(new CollectionMathMacros);
     }
 }

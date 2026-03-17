@@ -14,6 +14,7 @@ class StandardModel extends Model
 class PrefixedModel extends Model
 {
     use HasTablePrefix;
+
     protected $tablePrefix = 'inv_';
     // Base table guessing expected: inv_prefixed_models
 }
@@ -21,25 +22,27 @@ class PrefixedModel extends Model
 class ExplicitTableModel extends Model
 {
     use HasTablePrefix;
+
     protected $tablePrefix = 'inv_';
+
     protected $table = 'my_explicit_table';
     // Expected: my_explicit_table (prefix ignored)
 }
 
 it('guesses the table name normally if no prefix is set', function () {
-    $model = new StandardModel();
+    $model = new StandardModel;
 
     expect($model->getTable())->toBe('standard_models');
 });
 
 it('prefixes the guessed table name if a prefix is set', function () {
-    $model = new PrefixedModel();
+    $model = new PrefixedModel;
 
     expect($model->getTable())->toBe('inv_prefixed_models');
 });
 
 it('respects an explicitly defined table name and ignores the prefix', function () {
-    $model = new ExplicitTableModel();
+    $model = new ExplicitTableModel;
 
     expect($model->getTable())->toBe('my_explicit_table');
 });

@@ -4,12 +4,12 @@ namespace Nikoleesg\LaravelHelpers\Tests\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Nikoleesg\LaravelHelpers\Traits\DateScopes;
 use Nikoleesg\LaravelHelpers\Database\Factories\CustomTransactionFactory;
+use Nikoleesg\LaravelHelpers\Traits\DateScopes;
 
 class CustomTransaction extends Model
 {
-    use HasFactory, DateScopes;
+    use DateScopes, HasFactory;
 
     protected static function newFactory()
     {

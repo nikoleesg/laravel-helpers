@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Nikoleesg\LaravelHelpers\Enums\DateRange;
 use Nikoleesg\LaravelHelpers\Tests\Models\CustomTransaction;
 use Nikoleesg\LaravelHelpers\Tests\Models\Transaction;
@@ -185,7 +185,7 @@ it('retrieves transactions of last x (inclusive fluent date range)', function ()
         ->and(Transaction::ofLastQuarters(8, customRange: DateRange::INCLUSIVE)->get())->toHaveCount(24);
 });
 
-it('also works with a custom created_at column name', function() {
+it('also works with a custom created_at column name', function () {
     Schema::create('custom_transactions', function (Blueprint $blueprint) {
         $blueprint->id();
         $blueprint->string('col1');
@@ -199,7 +199,7 @@ it('also works with a custom created_at column name', function() {
     $createdAtValues = [
         ['custom_created_at' => '2023-03-31 13:05:14'],
         ['custom_created_at' => '2022-03-31 13:15:00'],
-        ['custom_created_at' => '2013-03-31 13:13:15']
+        ['custom_created_at' => '2013-03-31 13:13:15'],
     ];
 
     CustomTransaction::factory()
@@ -218,7 +218,7 @@ it('retrieves transactions of last x (with startFrom)', function () {
         ->and(Transaction::ofLastWeek(startFrom: '2023-03-31 13:15:00')->get())->toHaveCount(1);
 });
 
-it('also works with a custom datetime column', function() {
+it('also works with a custom datetime column', function () {
     Schema::create('custom_transactions', function (Blueprint $blueprint) {
         $blueprint->id();
         $blueprint->string('col1');
@@ -233,7 +233,7 @@ it('also works with a custom datetime column', function() {
     $approvedAtValues = [
         ['approved_at' => '2023-03-31 13:05:14'],
         ['approved_at' => '2022-03-31 13:15:00'],
-        ['approved_at' => '2013-03-31 13:13:15']
+        ['approved_at' => '2013-03-31 13:13:15'],
     ];
 
     CustomTransaction::factory()
@@ -246,7 +246,7 @@ it('also works with a custom datetime column', function() {
         ->and(CustomTransaction::ofLastDecade(column: 'approved_at')->get())->toHaveCount(1);
 });
 
-it('also works with both created_at and custom datetime column', function() {
+it('also works with both created_at and custom datetime column', function () {
     Schema::create('custom_transactions', function (Blueprint $blueprint) {
         $blueprint->id();
         $blueprint->string('col1');
@@ -269,8 +269,8 @@ it('also works with both created_at and custom datetime column', function() {
         ],
         [
             'custom_created_at' => '2013-03-31 13:13:15',
-            'approved_at' => '2013-03-31 13:13:15'
-        ]
+            'approved_at' => '2013-03-31 13:13:15',
+        ],
     ];
 
     CustomTransaction::factory()

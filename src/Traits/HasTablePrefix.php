@@ -20,7 +20,7 @@ trait HasTablePrefix
 
         // Otherwise, guess the table name and apply the prefix if set.
         $prefix = property_exists($this, 'tablePrefix') ? $this->tablePrefix : '';
-        
-        return $prefix . Str::snake(Str::pluralStudly(class_basename($this)));
+
+        return $prefix.Str::snake(Str::pluralStudly(class_basename($this)));
     }
 }

@@ -5,8 +5,8 @@ namespace Nikoleesg\LaravelHelpers\Tests\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Nikoleesg\LaravelHelpers\Traits\HasUuid;
 use Illuminate\Support\Str;
+use Nikoleesg\LaravelHelpers\Traits\HasUuid;
 
 beforeEach(function () {
     Schema::create('uuid_models', function (Blueprint $table) {
@@ -31,30 +31,40 @@ beforeEach(function () {
 class UuidModel extends Model
 {
     use HasUuid;
+
     protected $guarded = [];
 }
 
 class CustomUuidModel extends Model
 {
     use HasUuid;
+
     protected $guarded = [];
+
     protected $uuidColumn = 'my_custom_uuid';
 }
 
 class RouteKeyUuidModel extends Model
 {
     use HasUuid;
+
     protected $table = 'uuid_models';
+
     protected $guarded = [];
+
     protected $useUuidForRouteKey = true;
 }
 
 class PrimaryKeyUuidModel extends Model
 {
     use HasUuid;
+
     protected $table = 'primary_uuid_models';
+
     protected $guarded = [];
+
     protected $useUuidAsPrimaryKey = true;
+
     protected $uuidColumn = 'id';
 }
 
@@ -81,16 +91,16 @@ it('does not overwrite an existing uuid', function () {
 });
 
 it('uses uuid as the route key when configured', function () {
-    $model = new RouteKeyUuidModel();
+    $model = new RouteKeyUuidModel;
 
     expect($model->getRouteKeyName())->toBe('uuid');
-    
-    $defaultModel = new UuidModel();
+
+    $defaultModel = new UuidModel;
     expect($defaultModel->getRouteKeyName())->toBe('id');
 });
 
 it('uses uuid as primary key when configured', function () {
-    $model = new PrimaryKeyUuidModel();
+    $model = new PrimaryKeyUuidModel;
 
     expect($model->getKeyName())->toBe('id')
         ->and($model->getIncrementing())->toBeFalse()
