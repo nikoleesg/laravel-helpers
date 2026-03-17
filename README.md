@@ -99,6 +99,44 @@ $result = $collection->divideValues(2);
 // => Illuminate\Support\Collection { "a": 5, "b": 10, "c": 15 }
 ```
 
+#### `normalizeBySum`
+
+Calculates the percentage distribution (weight) of each element relative to the sum of all elements in the collection. 
+Throws an `InvalidArgumentException` if the sum of all elements is zero.
+
+```php
+$collection = collect(['a' => 10, 'b' => 20, 'c' => 20]);
+$result = $collection->normalizeBySum();
+
+// => Illuminate\Support\Collection { "a": 0.2, "b": 0.4, "c": 0.4 }
+```
+
+#### `largestRemainderRound`
+
+Rounds the collection's values to integers while guaranteeing their sum exactly matches the provided `$targetSum`. It uses the **Largest Remainder Method** (Hare-Niemeyer) to seamlessly distribute leftover fractional remainders.
+
+```php
+$collection = collect([
+    '15-19' => 2.4,
+    '20-34' => 7.5,
+    '35-49' => 8.5,
+    '50-64' => 7.4,
+    '65 & above' => 3.5,
+]);
+
+$result = $collection->largestRemainderRound(29);
+
+// The floored values sum to 27 (2+7+8+7+3). The target is 29, so the difference is +2.
+// The top 2 largest fractional remainders (0.5, 0.5) get the +1s.
+// => Illuminate\Support\Collection {
+//      "15-19": 2,
+//      "20-34": 8, // +1 (Remainder 0.5)
+//      "35-49": 9, // +1 (Remainder 0.5)
+//      "50-64": 7, // (Remainder 0.4)
+//      "65 & above": 3 // (Remainder 0.5... but we only had 2 to give due to a tie, it misses out)
+//    }
+```
+
 ### Date Scopes
 
 This package provides a wide range of useful **date scopes** for your Laravel Eloquent models via the `DateScopes` trait. It is a direct integration inspired by the [laravel-date-scopes](https://github.com/laracraft-tech/laravel-date-scopes) package.
