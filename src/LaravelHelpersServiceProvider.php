@@ -2,7 +2,9 @@
 
 namespace Nikoleesg\LaravelHelpers;
 
+use Illuminate\Support\Collection;
 use Nikoleesg\LaravelHelpers\Commands\LaravelHelpersCommand;
+use Nikoleesg\LaravelHelpers\Macros\CollectionMathMacros;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -21,5 +23,10 @@ class LaravelHelpersServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_laravel_helpers_table')
             ->hasCommand(LaravelHelpersCommand::class);
+    }
+
+    public function packageBooted(): void
+    {
+        Collection::mixin(new CollectionMathMacros());
     }
 }
