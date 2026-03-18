@@ -57,6 +57,7 @@ php artisan vendor:publish --tag="laravel-helpers-views"
 | **Date Scopes** | Convenient Date scopes for Eloquent models (e.g. `ofToday`, `ofLastWeek`). | [User Manual](docs/date-scopes/user_manual.md) |
 | **Eloquent Model Traits** | Traits like `HasUuid` and `HasTablePrefix` for standardizing Eloquent models. | [User Manual](docs/eloquent-model-traits/user_manual.md)<br>[Implementation Plan](docs/eloquent-model-traits/implementation_plan.md) |
 | **Reusable Workflows** | Structured implementation for durable asynchronous workflows with layer 1 and layer 2 activity bases. | [User Manual](docs/workflows/user_manual.md)<br>[Implementation Plan](docs/workflows/implementation_plan.md) |
+| **Singapore Faker Helpers** | Seed and fake Singapore-specific entities including Addresses, Personnel, and Resident profiles dynamically. | [User Manual](docs/singapore-faker/user_manual.md)<br>[Walkthrough](docs/singapore-faker/walkthrough.md)<br>[Implementation Plan](docs/singapore-faker/implementation_plan.md) |
 
 ## Testing
 
