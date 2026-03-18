@@ -55,6 +55,7 @@ class SingaporeAddressProvider extends Address
     protected static $streetAddressFormats = [
         '{{streetPrefix}} {{streetName}}',
         '{{streetName}} {{streetSuffix}}',
+        '{{streetName}} {{streetSuffix}} {{streetNumber}}',
     ];
 
     protected static $floorNumber = [
