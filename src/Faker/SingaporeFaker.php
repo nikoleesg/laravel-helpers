@@ -3,7 +3,7 @@
 namespace Nikoleesg\LaravelHelpers\Faker;
 
 use Faker\Factory;
-use Faker\Provider\en_SG\Address;
+use Faker\Provider\en_SG\Person;
 use Illuminate\Support\Collection;
 use Nikoleesg\LaravelHelpers\Data\Singapore\AddressData;
 use Nikoleesg\LaravelHelpers\Data\Singapore\PersonnelData;
@@ -11,6 +11,7 @@ use Nikoleesg\LaravelHelpers\Data\Singapore\ResidentData;
 use Nikoleesg\LaravelHelpers\Enums\Gender;
 use Nikoleesg\LaravelHelpers\Enums\HouseType;
 use Nikoleesg\LaravelHelpers\Enums\Race;
+use Nikoleesg\LaravelHelpers\Faker\Providers\SingaporeAddressProvider;
 
 class SingaporeFaker
 {
@@ -19,22 +20,32 @@ class SingaporeFaker
      */
     protected static function getWeightedHouseType(): HouseType
     {
+        return self::getWeightedHouseTypes(1)->first();
+    }
+
+    /**
+     * Get weighted house types based on exact count.
+     *
+     * @return Collection<int, HouseType>
+     */
+    protected static function getWeightedHouseTypes(int $count): Collection
+    {
         $weights = collect([
-            HouseType::HDB->value         => 70,
+            HouseType::HDB->value => 70,
             HouseType::Condominium->value => 20,
-            HouseType::Landed->value      => 10,
+            HouseType::Landed->value => 10,
         ]);
 
-        $normalizedWeights = $weights->normalizeBySum(100)->multiplyValues(100)->largestRemainderRound(100);
+        $normalizedWeights = $weights->normalizeBySum()->multiplyValues($count)->largestRemainderRound($count);
 
         $expanded = collect();
-        foreach ($normalizedWeights as $type => $count) {
-            for ($i = 0; $i < $count; $i++) {
+        foreach ($normalizedWeights as $type => $c) {
+            for ($i = 0; $i < $c; $i++) {
                 $expanded->push(HouseType::from($type));
             }
         }
 
-        return $expanded->random();
+        return $expanded->shuffle()->values();
     }
 
     /**
@@ -42,23 +53,33 @@ class SingaporeFaker
      */
     protected static function getWeightedRace(): Race
     {
+        return self::getWeightedRaces(1)->first();
+    }
+
+    /**
+     * Get weighted races based on exact count.
+     *
+     * @return Collection<int, Race>
+     */
+    protected static function getWeightedRaces(int $count): Collection
+    {
         $weights = collect([
             Race::Chinese->value => 70,
-            Race::Malay->value   => 20,
-            Race::Indian->value  => 5,
-            Race::Other->value   => 5,
+            Race::Malay->value => 20,
+            Race::Indian->value => 5,
+            Race::Other->value => 5,
         ]);
 
-        $normalizedWeights = $weights->normalizeBySum(100)->multiplyValues(100)->largestRemainderRound(100);
+        $normalizedWeights = $weights->normalizeBySum()->multiplyValues($count)->largestRemainderRound($count);
 
         $expanded = collect();
-        foreach ($normalizedWeights as $race => $count) {
-            for ($i = 0; $i < $count; $i++) {
+        foreach ($normalizedWeights as $race => $c) {
+            for ($i = 0; $i < $c; $i++) {
                 $expanded->push(Race::from($race));
             }
         }
 
-        return $expanded->random();
+        return $expanded->shuffle()->values();
     }
 
     /**
@@ -67,7 +88,7 @@ class SingaporeFaker
     public static function address(?HouseType $houseType = null): AddressData
     {
         $faker = Factory::create('en_SG');
-        $addressProvider = new \Nikoleesg\LaravelHelpers\Faker\Providers\SingaporeAddressProvider($faker);
+        $addressProvider = new SingaporeAddressProvider($faker);
         $faker->addProvider($addressProvider);
 
         $type = $houseType ?? self::getWeightedHouseType();
@@ -89,7 +110,7 @@ class SingaporeFaker
      */
     public static function addresses(int $count): Collection
     {
-        return collect(range(1, $count))->map(fn () => self::address());
+        return self::getWeightedHouseTypes($count)->map(fn (HouseType $type) => self::address($type));
     }
 
     /**
@@ -100,15 +121,15 @@ class SingaporeFaker
         $selectedRace = $race ?? self::getWeightedRace();
         $locale = match ($selectedRace) {
             Race::Chinese => 'en_SG',
-            Race::Malay   => 'ms_MY',
-            Race::Indian  => 'en_IN',
-            Race::Other   => 'en_US',
+            Race::Malay => 'ms_MY',
+            Race::Indian => 'en_IN',
+            Race::Other => 'en_US',
         };
 
         $faker = Factory::create($locale);
 
         if ($locale === 'en_SG') {
-            $faker->addProvider(new \Faker\Provider\en_SG\Person($faker));
+            $faker->addProvider(new Person($faker));
         } elseif ($locale === 'ms_MY') {
             $faker->addProvider(new \Faker\Provider\ms_MY\Person($faker));
         } elseif ($locale === 'en_IN') {
@@ -143,7 +164,7 @@ class SingaporeFaker
      */
     public static function personnels(int $count): Collection
     {
-        return collect(range(1, $count))->map(fn () => self::personnel());
+        return self::getWeightedRaces($count)->map(fn (Race $race) => self::personnel($race));
     }
 
     /**
@@ -175,6 +196,11 @@ class SingaporeFaker
      */
     public static function residents(int $count): Collection
     {
-        return collect(range(1, $count))->map(fn () => self::resident());
+        $houseTypes = self::getWeightedHouseTypes($count);
+        $races = self::getWeightedRaces($count);
+
+        return collect(range(0, $count - 1))->map(function ($index) use ($houseTypes, $races) {
+            return self::resident($houseTypes[$index], $races[$index]);
+        });
     }
 }
