@@ -4,7 +4,6 @@ namespace Nikoleesg\LaravelHelpers\Faker;
 
 use Faker\Factory;
 use Faker\Provider\en_SG\Address;
-use Faker\Provider\en_SG\Person;
 use Illuminate\Support\Collection;
 use Nikoleesg\LaravelHelpers\Data\Singapore\AddressData;
 use Nikoleesg\LaravelHelpers\Data\Singapore\PersonnelData;
@@ -70,7 +69,6 @@ class SingaporeFaker
         $faker = Factory::create('en_SG');
         $addressProvider = new \Nikoleesg\LaravelHelpers\Faker\Providers\SingaporeAddressProvider($faker);
         $faker->addProvider($addressProvider);
-        $faker->addProvider(new Person($faker));
 
         $type = $houseType ?? self::getWeightedHouseType();
         $addressProvider->setHouseType($type);
@@ -110,7 +108,7 @@ class SingaporeFaker
         $faker = Factory::create($locale);
 
         if ($locale === 'en_SG') {
-            $faker->addProvider(new Person($faker));
+            $faker->addProvider(new \Faker\Provider\en_SG\Person($faker));
         } elseif ($locale === 'ms_MY') {
             $faker->addProvider(new \Faker\Provider\ms_MY\Person($faker));
         } elseif ($locale === 'en_IN') {
