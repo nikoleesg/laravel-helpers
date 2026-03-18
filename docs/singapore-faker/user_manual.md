@@ -12,8 +12,8 @@ Generators take advantage of defined PHP Enums for structured definitions:
 
 | Enum Name | Cases | Weights Default |
 | :--- | :--- | :--- | 
-| `HouseType` | `10` (HDB), `20` (Condominium), `30` (Landed) | 70% HDB, 20% Condo, 10% Landed |
-| `Race` | `10` (Chinese), `20` (Malay), `30` (Indian), `90` (Other) | 70% Chinese, 20% Malay, 5% Indian, 5% Other |
+| `HouseType` | `1` (HDB), `2` (Condominium), `3` (Landed) | 70% HDB, 20% Condo, 10% Landed |
+| `Race` | `1` (Chinese), `2` (Malay), `3` (Indian), `4` (Other) | 70% Chinese, 20% Malay, 5% Indian, 5% Other |
 | `Gender` | `1` (Male), `2` (Female) | ~50% each |
 
 ## Usage Examples
