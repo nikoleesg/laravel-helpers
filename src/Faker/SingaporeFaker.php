@@ -129,7 +129,7 @@ class SingaporeFaker
         $faker = Factory::create($locale);
 
         if ($locale === 'en_SG') {
-            $faker->addProvider(new Person($faker));
+            $faker->addProvider(new \Nikoleesg\LaravelHelpers\Faker\Providers\SingaporePersonProvider($faker));
         } elseif ($locale === 'ms_MY') {
             $faker->addProvider(new \Faker\Provider\ms_MY\Person($faker));
         } elseif ($locale === 'en_IN') {
