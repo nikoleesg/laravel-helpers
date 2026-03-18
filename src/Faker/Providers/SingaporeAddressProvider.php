@@ -79,6 +79,11 @@ class SingaporeAddressProvider extends Address
         return static::randomElement(static::$streetPrefix);
     }
 
+    public static function streetSuffix()
+    {
+        return static::randomElement(static::$streetSuffix);
+    }
+
     public function streetNumber()
     {
         return static::numerify(static::randomElement(static::$streetNumber));
