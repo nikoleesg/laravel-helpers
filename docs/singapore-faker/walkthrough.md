@@ -1,29 +1,20 @@
 # Singapore Faker Helpers Walkthrough
 
 ## Overview
-Successfully implemented helper classes to generate Singapore-specific fake data including Addresses, Personnel, and combined Resident profiles. 
+Successfully implemented helper classes to generate heavily localized Singapore-specific fake data including Addresses, Personnel, and fully combined Resident profiles. 
 
 ## Changes Made
 - Added `fakerphp/faker` and `spatie/laravel-data` to the `require` block in `composer.json`.
-- Created Enums in `src/Enums/`:
-  - `HouseType` (HDB, Condominium, Landed)
-  - `Race` (Chinese, Malay, Indian, Other)
-  - `Gender` (Male, Female)
-- Created DTOs in `src/Data/Singapore/`:
-  - `AddressData` 
-  - `PersonnelData`
-  - `ResidentData` (Flat combination of the Address & Personnel properties)
-- Created main logic class in `src/Faker/SingaporeFaker.php` with 3 robust static generators:
-  - `address(houseType)` / `addresses(count)`
-  - `personnel(race, gender)` / `personnels(count)`
-  - `resident(houseType, race, gender)` / `residents(count)`
-- Created the user manual in `docs/singapore-faker/user_manual.md`.
-- Implemented weighted logic (70/20/10 House Type, 70/20/5/5 Race) leveraging the package's existing `normalizeBySum()`, `multiplyValues()`, and `largestRemainderRound()` collection macros to guarantee exact percentage distribution during generation arrays.
+- Implemented `HouseType`, `Race`, and `Gender` Enums using pure integers (e.g., 1, 2, 3) for database and API interoperability. 
+- Integrated immutable DTOs (`AddressData`, `PersonnelData`, `ResidentData`) strongly typing all output properties. Resident is configured flat.
+- Implemented `SingaporeFaker.php` exposing both singular (`address()`, `personnel()`, `resident()`) and plural, array-driven macro generators (`addresses(10)`, etc.).
+- Designed core mathematics (`normalizeBySum()->multiplyValues($count)->largestRemainderRound($count)`) mapping locally to `Collection` extensions to guarantee strictly accurate distribution slices rather than naive random loops.
+- Solved generation inaccuracies observed in native libraries by injecting fully customized implementations:
+  - **`SingaporeAddressProvider`**: Discards generic `en_SG` oversights, manually rendering explicit blocks, real native street lexical arrays, custom unit configurations mapped by the `HouseType`, and appended house letters (e.g. `Blk 112A`).
+  - **`SingaporePersonProvider`**: Overrides English generalizations. We introduced an expansive mapping for `en_SG` naming arrays incorporating common English first-names (Alex, Julyn) alongside accurately structured Chinese names. Integrates three permutations resembling formal identities (`Lim Xin`, `Rachel Khoo`, `Desmond Yong Qiang`).
 
-## Testing & Verification
-- Unit test file created at `tests/Unit/Faker/SingaporeFakerTest.php`.
-- Verified that returning `$count = 1` yields exactly one valid DTO (`AddressData|PersonnelData|ResidentData`).
-- Verified that returning `$count > 1` yields exactly an `Illuminate\Support\Collection` of DTOs.
-- Verified properties comply with strict SG rules: 6-digit postal codes, 8-digit mobile starting with 3,6,8,9, and unit block strings only created for HDB/Condominiums starting with `#`.
-- Aggregate test executed to ensure generated payloads strictly adhered to mathematical percentage weights across 100 randomly requested entries.
-- All 10 Pest unit tests covering 35 assertions passed flawlessly.
+## Testing & Validation
+- Fully covered the generation engine using automated Pest assertions.
+- Verified individual properties align seamlessly (e.g., Landed properties rejecting unit values automatically).
+- Aggregate testing ensures plural outputs exactly map lengths and requested weighted variations across multi-item requests. 
+- All unit tests reliably pass successfully under continuous evaluation.

@@ -10,20 +10,20 @@ We will use `spatie/laravel-data` for the DTOs and `fakerphp/faker` for data gen
 
 ### Enums
 #### [NEW] src/Enums/HouseType.php
-- Enum with cases: `HDB` (70%), `Condominium` (20%), `Landed` (10%).
+- Enum with cases: `HDB` (1), `Condominium` (2), `Landed` (3). Default distributions: 70%, 20%, 10%.
 #### [NEW] src/Enums/Race.php
-- Enum with cases: `Chinese` (70%), `Malay` (20%), `Indian` (5%), `Other` (5%).
+- Enum with cases: `Chinese` (1), `Malay` (2), `Indian` (3), `Other` (4). Default distributions: 70%, 20%, 5%, 5%.
 #### [NEW] src/Enums/Gender.php
-- Enum with cases: `Male`, `Female`.
+- Enum with cases: `Male` (1), `Female` (2).
 
 ### Data Transfer Objects (DTOs)
 #### [NEW] src/Data/Singapore/AddressData.php
 - Properties: `string $block`, `string $street`, `?string $unit`, `string $postal`, `HouseType $house_type`.
 #### [NEW] src/Data/Singapore/PersonnelData.php
-- Properties: `string $name`, `int $age`, `Gender $gender`, `string $phone_number`.
+- Properties: `string $name`, `int $age`, `Race $race`, `Gender $gender`, `string $phone_number`.
 #### [NEW] src/Data/Singapore/ResidentData.php
 - A flattened DTO combining both personnel and address information.
-- Properties: `string $name`, `int $age`, `Gender $gender`, `string $phone_number`, `string $block`, `string $street`, `?string $unit`, `string $postal`, `HouseType $house_type`.
+- Properties: `string $name`, `int $age`, `Race $race`, `Gender $gender`, `string $phone_number`, `string $block`, `string $street`, `?string $unit`, `string $postal`, `HouseType $house_type`.
 
 ### Data Generator Helper
 #### [NEW] src/Faker/SingaporeFaker.php
@@ -35,19 +35,27 @@ We will use `spatie/laravel-data` for the DTOs and `fakerphp/faker` for data gen
   - `public static function resident(?HouseType $houseType = null, ?Race $race = null, ?Gender $gender = null): ResidentData`
   - `public static function residents(int $count): Collection<int, ResidentData>`
 - Implementation details:
-  - Return Format: Returns a single DTO object for singular methods (e.g. `address()`). Returns an `Illuminate\Support\Collection` of DTOs for plural methods (e.g. `addresses()`).
-  - Parameters: By specifying parameters like `$houseType`, `$race`, or `$gender`, users can override the random weighting for both single and multiple item generations.
-  - Address Generation: `block` generated up to 3 digits (with optional uppercase letter for HDB). `unit` generated with `#` prefix and standard format for HDB/Condominium. `postal` 6 digits.
-  - Personnel Generation: Age generated between 18 and 80. Race instantiation determines the proper Faker locale (`en_SG` for Chinese, `ms_MY` for Malay, `en_IN` for Indian, `en_US` for Other) used for the name. Phone generated prefixed with 3, 6, 8, or 9 and exactly 8 digits.
+  - Return Format: Returns a single strongly typed DTO object for singular methods. Returns an `Illuminate\Support\Collection` of DTOs for plural methods.
+  - Parameters: Specify parameters to bypass random weighted generation for singular sets.
+  - Accurate Scaling: Plural methods utilize `normalizeBySum()->multiplyValues($count)->largestRemainderRound($count)` macro to ensure generated Collections perfectly map the distribution weights across the requested `$count`.
+
+### Custom Faker Providers
+#### [NEW] src/Faker/Providers/SingaporeAddressProvider.php
+- Extends `Faker\Provider\en_SG\Address`.
+- Overloads `$streetNumber`, `$streetSuffix`, `$streetPrefix`, `$streetName`, `$streetAddressFormats`, `$floorNumber`, and `$apartmentNumber` properties exactly to Singapore lexical formats avoiding library oversights.
+- Exposes `$houseType` injection locally securely managing the formatting of `blockNumber()` and HDB constraint logic on `unitNumber()`.
+
+#### [NEW] src/Faker/Providers/SingaporePersonProvider.php
+- Extends `Faker\Provider\en_SG\Person`.
+- Extensively overrides lists for `$lastName`, `$firstNameMale`, `$firstNameFemale` with common Singaporean Chinese names (e.g., Tan, Lee, Goh, Wei Jie).
+- Adds lists for common English identifiers (`$firstNameMaleEn`, `$firstNameFemaleEn`) typically used by SG Chinese (e.g., Alex, Desmond, Michelle, Rachael).
+- Adjusts `$formats` generation logic to natively form permutations conforming to local real-world structures: `<Chinese Surname> <Chinese Given Name>`, `<English Name> <Chinese Surname>`, or `<English Name> <Chinese Surname> <Chinese Given Name>`.
 
 ## Verification Plan
 
 ### Automated Tests
 #### [NEW] tests/Unit/Faker/SingaporeFakerTest.php
 We will write Pest unit tests to verify:
-- `SingaporeFaker::address()` generates valid properties based on house type constraints (e.g. `unit` exists only for non-Landed, `postal` is 6 digits, `block` only has letters if `HDB`).
-- `SingaporeFaker::personnel()` generates valid properties (e.g. `phone_number` is 8 digits and starts with 3/6/8/9, `age` is between 18 and 80).
-- `SingaporeFaker::resident()` returns precisely the flattened DTO with the combined properties.
-- Generating with specific parameter overrides (e.g. `SingaporeFaker::address(houseType: HouseType::Landed)` ensures that generation adheres strictly to the passed parameters).
-- The returned data types exactly match `DTO` for singular requests and `Collection` of `DTOs` when a count is provided.
-- All tests will logically assert weights are respected in an aggregate context.
+- `SingaporeFaker::address()` generates valid properties based on house type constraints (e.g. `unit` exists only for non-Landed, `postal` is 6 digits, `block` generates randomly distributed text suffix for `HDB`).
+- `SingaporeFaker::personnel()` overrides generic English dependencies and implements rigorous realistic variations of SG metrics.
+- All plural implementations dynamically match counts precisely while enforcing deterministic mathematical aggregates based on House Type and Race arrays.
