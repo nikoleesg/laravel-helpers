@@ -4,7 +4,7 @@ namespace Nikoleesg\LaravelHelpers\Enums;
 
 enum HouseType: int
 {
-    case HDB         = 10;
-    case Condominium = 20;
-    case Landed      = 30;
+    case HDB         = 1;
+    case Condominium = 2;
+    case Landed      = 3;
 }
