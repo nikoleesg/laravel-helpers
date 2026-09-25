@@ -29,3 +29,17 @@ phpunit.xml
 phpstan.neon
 testbench.yaml
 /coverage
+
+# AI coding agent configuration and guides (local, project-scoped)
+/.claude/
+/CLAUDE.md
+/AGENTS.md
+/ANTIGRAVITY.md
+/.agents/
+/.antigravity/
+/.antigravitycli/
+/.codex/
+/.pi/
+/.omo/
+/.mcp.json
+/.chrome-profiles/
