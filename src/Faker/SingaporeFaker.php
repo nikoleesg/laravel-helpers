@@ -3,6 +3,7 @@
 namespace Nikoleesg\LaravelHelpers\Faker;
 
 use Faker\Factory;
+use Faker\Provider\ms_MY\Person;
 use Illuminate\Support\Collection;
 use Nikoleesg\LaravelHelpers\Data\Singapore\AddressData;
 use Nikoleesg\LaravelHelpers\Data\Singapore\PersonnelData;
@@ -131,7 +132,7 @@ class SingaporeFaker
         if ($locale === 'en_SG') {
             $faker->addProvider(new SingaporePersonProvider($faker));
         } elseif ($locale === 'ms_MY') {
-            $faker->addProvider(new \Faker\Provider\ms_MY\Person($faker));
+            $faker->addProvider(new Person($faker));
         } elseif ($locale === 'en_IN') {
             $faker->addProvider(new \Faker\Provider\en_IN\Person($faker));
         } elseif ($locale === 'en_US') {
