@@ -30,8 +30,8 @@ abstract class AbstractModelActivity extends AbstractIdempotentActivity
     /**
      * Execute the side effects.
      *
-     * @param Model&WorkflowAggregator $model Evaluated unlocked model
-     * @param mixed ...$args Additional arguments passed into the activity
+     * @param  Model&WorkflowAggregator  $model  Evaluated unlocked model
+     * @param  mixed  ...$args  Additional arguments passed into the activity
      */
     abstract protected function performAction(Model $model, mixed ...$args): void;
 
@@ -58,6 +58,7 @@ abstract class AbstractModelActivity extends AbstractIdempotentActivity
 
             if ($this->getTargetState() === null) {
                 $this->assertPreconditions($model);
+
                 return;
             }
 
@@ -70,7 +71,7 @@ abstract class AbstractModelActivity extends AbstractIdempotentActivity
             // or we must verify it. Let's assume order() exists (we can fallback if not).
             if (method_exists($currentState, 'order') && method_exists($targetStateStr, 'order')) {
                 if ($currentState::order() >= $targetStateStr::order()) {
-                    throw new SkipActivityException();
+                    throw new SkipActivityException;
                 }
             }
 
@@ -117,7 +118,7 @@ abstract class AbstractModelActivity extends AbstractIdempotentActivity
 
         DB::transaction(function () use ($id) {
             $model = $this->getModelInstance($id, true);
-            
+
             $stateColumn = $model->getWorkflowStateColumn();
             $model->{$stateColumn}->transitionTo($this->getTargetState());
         });
@@ -140,13 +141,10 @@ abstract class AbstractModelActivity extends AbstractIdempotentActivity
 
     /**
      * Extract the primary key ID. We assume the first argument is always the ID for Model Activities.
-     *
-     * @param array $args
-     * @return int|string
      */
     private function extractId(array $args): int|string
     {
-        if (empty($args) || (!is_int($args[0]) && !is_string($args[0]))) {
+        if (empty($args) || (! is_int($args[0]) && ! is_string($args[0]))) {
             throw new DomainException('First argument to an AbstractModelActivity must be the primary key ID of the WorkflowAggregator Model.');
         }
 

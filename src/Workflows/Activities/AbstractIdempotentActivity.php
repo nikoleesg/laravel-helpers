@@ -65,7 +65,7 @@ abstract class AbstractIdempotentActivity extends Activity
 
     /**
      * The core loop that implements the 3-phase idiosyncratic retryable pattern.
-     * 
+     *
      * @throws NonRetryableException|Throwable
      */
     final public function execute(mixed ...$args): mixed
@@ -91,7 +91,7 @@ abstract class AbstractIdempotentActivity extends Activity
         } catch (Throwable $e) {
             // Converts known domain exceptions into non-retryable exceptions
             $this->throwAsNonRetryableIfConfigured($e, $this->getNonRetryableExceptions());
-            
+
             // Should be unreachable if mapped, will throw original otherwise
             throw $e;
         }
@@ -99,7 +99,7 @@ abstract class AbstractIdempotentActivity extends Activity
 
     /**
      * Define which exceptions should permanently fail the activity instead of retrying.
-     * 
+     *
      * @return array<class-string<Throwable>>
      */
     protected function getNonRetryableExceptions(): array

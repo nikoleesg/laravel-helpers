@@ -64,7 +64,7 @@ class SingaporeAddressProvider extends Address
 
     // Singapore apartments typically are 2-4 digits.
     protected static $apartmentNumber = [
-        '##', '###', '####'
+        '##', '###', '####',
     ];
 
     public function setHouseType(?HouseType $houseType): self
@@ -95,7 +95,7 @@ class SingaporeAddressProvider extends Address
     }
 
     /**
-     * Override block generation to match custom HDB and Condominium logic. 
+     * Override block generation to match custom HDB and Condominium logic.
      */
     public function blockNumber()
     {

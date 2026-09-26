@@ -11,31 +11,31 @@ class SingaporePersonProvider extends Person
         'Teo', 'Ang', 'Poh', 'Neo', 'Sim', 'Chong', 'Chia', 'Yeo', 'Tay', 'Low',
         'Toh', 'Choo', 'Chee', 'Cheong', 'Chew', 'Chin', 'Chow', 'Foo', 'Gan',
         'Heng', 'Ho', 'Khoo', 'Lau', 'Loh', 'Loo', 'Lum', 'Phua', 'Seah', 'Song',
-        'Quek', 'Teng', 'Ting', 'Wee', 'Yap', 'Yong', 'Aw', 'Boon', 'Cheng'
+        'Quek', 'Teng', 'Ting', 'Wee', 'Yap', 'Yong', 'Aw', 'Boon', 'Cheng',
     ];
 
     protected static $firstNameMale = [
         'Wei Jie', 'Jun Jie', 'Hao', 'Ming', 'Wei', 'Da', 'Qiang', 'Guo', 'An',
-        'Gang', 'Bo', 'Wen', 'Chao', 'Cheng', 'Jian', 'Zhi', 'Hui', 'Xin', 'Long'
+        'Gang', 'Bo', 'Wen', 'Chao', 'Cheng', 'Jian', 'Zhi', 'Hui', 'Xin', 'Long',
     ];
 
     protected static $firstNameFemale = [
         'Jing', 'Ting', 'Mei', 'Fang', 'Li', 'Min', 'Yan', 'Hua', 'Lan', 'Lian',
-        'Ai', 'Yu', 'Shu', 'Qing', 'Na', 'Xia', 'Yun', 'Zhen', 'Ling', 'Xiu', 'Qun'
+        'Ai', 'Yu', 'Shu', 'Qing', 'Na', 'Xia', 'Yun', 'Zhen', 'Ling', 'Xiu', 'Qun',
     ];
 
     protected static $firstNameMaleEn = [
-        'Alex', 'Henry', 'Ethan', 'Noah', 'Lucas', 'Oliver', 'Liam', 'Jayden', 'Isaac', 'Benjamin', 
+        'Alex', 'Henry', 'Ethan', 'Noah', 'Lucas', 'Oliver', 'Liam', 'Jayden', 'Isaac', 'Benjamin',
         'Caleb', 'Daniel', 'Joshua', 'Jacob', 'John', 'Jonathan', 'Josiah', 'Jovan', 'Justin',
         'Ayden', 'Kayden', 'Eden', 'Hayden', 'Shawn', 'Shaun', 'Sean', 'Vincent', 'Desmond',
-        'Alvin', 'Kelvin', 'Melvin', 'Bryan', 'Ryan', 'Joel', 'Leon', 'Marcus', 'Gideon'
+        'Alvin', 'Kelvin', 'Melvin', 'Bryan', 'Ryan', 'Joel', 'Leon', 'Marcus', 'Gideon',
     ];
 
     protected static $firstNameFemaleEn = [
-        'Julyn', 'Michelle', 'Sarah', 'Ashley', 'Olivia', 'Chloe', 'Sophia', 'Emma', 'Charlotte', 
-        'Amelia', 'Harper', 'Evelyn', 'Haley', 'Hailey', 'Hana', 'Hannah', 'Hazel', 'Heather', 
-        'Heidi', 'Hope', 'Amanda', 'Melissa', 'Rachel', 'Jessica', 'Nicole', 'Jasmine', 'Shirley', 
-        'Grace', 'Joanne', 'Felicia', 'Charmaine', 'Eunice', 'Valerie', 'Bernice', 'Serene'
+        'Julyn', 'Michelle', 'Sarah', 'Ashley', 'Olivia', 'Chloe', 'Sophia', 'Emma', 'Charlotte',
+        'Amelia', 'Harper', 'Evelyn', 'Haley', 'Hailey', 'Hana', 'Hannah', 'Hazel', 'Heather',
+        'Heidi', 'Hope', 'Amanda', 'Melissa', 'Rachel', 'Jessica', 'Nicole', 'Jasmine', 'Shirley',
+        'Grace', 'Joanne', 'Felicia', 'Charmaine', 'Eunice', 'Valerie', 'Bernice', 'Serene',
     ];
 
     protected static $formats = [

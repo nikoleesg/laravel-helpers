@@ -18,6 +18,7 @@
     "require": {
         "php": "^8.3",
         "illuminate/contracts": "^11.0||^12.0",
+        "illuminate/http": "^11.0||^12.0",
         "spatie/laravel-data": "^4.20",
         "spatie/laravel-package-tools": "^1.16"
     },
@@ -66,7 +67,8 @@
                 "Nikoleesg\\LaravelHelpers\\LaravelHelpersServiceProvider"
             ],
             "aliases": {
-                "LaravelHelpers": "Nikoleesg\\LaravelHelpers\\Facades\\LaravelHelpers"
+                "LaravelHelpers": "Nikoleesg\\LaravelHelpers\\Facades\\LaravelHelpers",
+                "OneMap": "Nikoleesg\\LaravelHelpers\\Facades\\OneMap"
             }
         }
     },

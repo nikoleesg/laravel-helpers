@@ -2,8 +2,8 @@
 
 namespace Nikoleesg\LaravelHelpers\Data\Singapore;
 
-use Spatie\LaravelData\Data;
 use Nikoleesg\LaravelHelpers\Enums\HouseType;
+use Spatie\LaravelData\Data;
 
 class AddressData extends Data
 {

@@ -10,12 +10,11 @@ use Workflow\Exceptions\NonRetryableException;
 trait MapsWorkflowExceptions
 {
     /**
-     * Map common domain/validation exceptions to NonRetryableException 
+     * Map common domain/validation exceptions to NonRetryableException
      * to prevent infinite retry loops in laravel-workflow activities.
      *
-     * @param Throwable $e
-     * @param array<class-string<Throwable>> $additionalToMap
-     * @return void
+     * @param  array<class-string<Throwable>>  $additionalToMap
+     *
      * @throws NonRetryableException|Throwable
      */
     protected function throwAsNonRetryableIfConfigured(Throwable $e, array $additionalToMap = []): void

@@ -2,9 +2,9 @@
 
 namespace Nikoleesg\LaravelHelpers\Data\Singapore;
 
-use Spatie\LaravelData\Data;
 use Nikoleesg\LaravelHelpers\Enums\Gender;
 use Nikoleesg\LaravelHelpers\Enums\Race;
+use Spatie\LaravelData\Data;
 
 class PersonnelData extends Data
 {

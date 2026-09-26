@@ -3,7 +3,6 @@
 namespace Nikoleesg\LaravelHelpers\Faker;
 
 use Faker\Factory;
-use Faker\Provider\en_SG\Person;
 use Illuminate\Support\Collection;
 use Nikoleesg\LaravelHelpers\Data\Singapore\AddressData;
 use Nikoleesg\LaravelHelpers\Data\Singapore\PersonnelData;
@@ -12,6 +11,7 @@ use Nikoleesg\LaravelHelpers\Enums\Gender;
 use Nikoleesg\LaravelHelpers\Enums\HouseType;
 use Nikoleesg\LaravelHelpers\Enums\Race;
 use Nikoleesg\LaravelHelpers\Faker\Providers\SingaporeAddressProvider;
+use Nikoleesg\LaravelHelpers\Faker\Providers\SingaporePersonProvider;
 
 class SingaporeFaker
 {
@@ -129,7 +129,7 @@ class SingaporeFaker
         $faker = Factory::create($locale);
 
         if ($locale === 'en_SG') {
-            $faker->addProvider(new \Nikoleesg\LaravelHelpers\Faker\Providers\SingaporePersonProvider($faker));
+            $faker->addProvider(new SingaporePersonProvider($faker));
         } elseif ($locale === 'ms_MY') {
             $faker->addProvider(new \Faker\Provider\ms_MY\Person($faker));
         } elseif ($locale === 'en_IN') {

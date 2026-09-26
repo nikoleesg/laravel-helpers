@@ -1,41 +1,69 @@
 # Eloquent Model Traits User Manual
 
-This package provides traits to add standard, helpful behaviors to your Eloquent models.
+This package provides reusable traits to add standard, helpful behaviors to your Eloquent models.
 
-## `HasUuid`
+## `HasGeoLocation`
 
-Automatically generates a UUID string when a model is being created.
+Provides Haversine-based Eloquent scopes for location-based filtering and distance calculations.
 
-```php
-use Illuminate\Database\Eloquent\Model;
-use Nikoleesg\LaravelHelpers\Traits\HasUuid;
-
-class Post extends Model
-{
-    use HasUuid;
-    
-    // Optional properties for custom behavior:
-    // protected string $uuidColumn = 'my_uuid';
-    // protected bool $useUuidAsPrimaryKey = true;
-    // protected bool $useUuidForRouteKey = true;
-}
-```
-
-## `HasTablePrefix`
-
-Automatically prefixes the table name of the model when guessed by Laravel. Handily bypasses the explicit `protected $table` declaration.
+### Basic Usage
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Nikoleesg\LaravelHelpers\Traits\HasTablePrefix;
+use Nikoleesg\LaravelHelpers\Traits\HasGeoLocation;
 
-class Invoice extends Model
+class Listing extends Model
 {
-    use HasTablePrefix;
-    
-    // Prefix to prepend to the dynamically guessed table name (e.g., 'invoices')
-    protected string $tablePrefix = 'inv_'; 
-    
-    // Resolves table name to: 'inv_invoices'
+    use HasGeoLocation;
+
+    // Optional: customize column names (defaults: 'latitude', 'longitude')
+    // protected string $latitudeColumn = 'lat';
+    // protected string $longitudeColumn = 'lng';
 }
 ```
+
+### Available Scopes
+
+**`nearby($lat, $lng, $radius = 10, $unit = 'km')`** — Find records within a radius, ordered nearest-first:
+
+```php
+// Find listings within 25 km
+Listing::nearby($lat, $lng, 25)->get();
+
+// Find listings within 10 miles
+Listing::nearby($lat, $lng, 10, 'mi')->get();
+
+// Chain with other query conditions
+Listing::where('is_active', true)->nearby($lat, $lng, 5)->paginate();
+```
+
+**`withDistance($lat, $lng, $unit = 'km')`** — Add a computed `distance` column without filtering:
+
+```php
+// Get all listings with distance info
+Listing::withDistance($lat, $lng)->orderBy('distance')->get();
+
+// Display distance in miles
+Listing::withDistance($lat, $lng, 'mi')->get();
+```
+
+### Column Configuration
+
+Override the default column names by defining properties on your model:
+
+```php
+class Store extends Model
+{
+    use HasGeoLocation;
+
+    protected string $latitudeColumn = 'lat';
+    protected string $longitudeColumn = 'lng';
+}
+```
+
+### Supported Units
+
+| Unit | Constant | Earth Radius |
+|---|---|---|
+| `'km'` (default) | 6371 km | Kilometers |
+| `'mi'` | 3959 mi | Miles |
